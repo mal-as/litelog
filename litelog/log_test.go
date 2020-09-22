@@ -2,11 +2,56 @@ package litelog
 
 import (
 	"bytes"
-	"fmt"
+	"os"
+	"os/exec"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestFatal(t *testing.T) {
+	if os.Getenv("BE_CRASHER") == "1" {
+		buf := &bytes.Buffer{}
+		l := New(WithWriter(buf))
+		l.Fatal("some text")
+		if buf.String() != "[FATAL] some text\n" {
+			t.Errorf("expected string '[FATAL] some text', but got - %s\n", buf.String())
+		}
+		return
+	}
+
+	cmd := exec.Command(os.Args[0], "-test.run=TestFatal")
+	cmd.Env = append(os.Environ(), "BE_CRASHER=1")
+	err := cmd.Run()
+
+	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+		return
+	}
+
+	t.Fatalf("process ran with err %v, want exit status 1", err)
+}
+
+func TestFatalf(t *testing.T) {
+	if os.Getenv("BE_CRASHER") == "1" {
+		buf := &bytes.Buffer{}
+		l := New(WithWriter(buf))
+		l.Fatalf("some text %d - %v", 1, true)
+		if buf.String() != "[FATAL] some text 1 - true" {
+			t.Errorf("expected string '[FATAL] some text 1 - true', but got - %s\n", buf.String())
+		}
+		return
+	}
+
+	cmd := exec.Command(os.Args[0], "-test.run=TestFatalf")
+	cmd.Env = append(os.Environ(), "BE_CRASHER=1")
+	err := cmd.Run()
+
+	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+		return
+	}
+
+	t.Fatalf("process ran with err %v, want exit status 1", err)
+}
 
 func TestPrintln(t *testing.T) {
 	in := "some text"
@@ -32,8 +77,6 @@ func TestPrintln(t *testing.T) {
 	if !strings.HasSuffix(buf.String(), in+"\n") {
 		t.Errorf("result lost message: %s\n", buf.String())
 	}
-
-	fmt.Println(buf.String())
 }
 
 func TestPrintf(t *testing.T) {
@@ -56,8 +99,6 @@ func TestPrintf(t *testing.T) {
 	if !strings.HasSuffix(buf.String(), in) {
 		t.Errorf("result lost message: %s\n", buf.String())
 	}
-
-	fmt.Println(buf.String())
 }
 
 func TestLVL(t *testing.T) {
