@@ -1,6 +1,6 @@
 # LiteLog
 <a href="https://codecov.io/gh/mal-as/litelog" alt="coverage">
-        <img src="img.shields.io/badge/coverage-96.94%25-success" /></a>
+        <img src="https://img.shields.io/badge/coverage-96.94%25-success" /></a>
 
 ## Litelog is simple tiny package that provide logging with levels
 There are five levels 
