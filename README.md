@@ -32,7 +32,7 @@ log.Warn("some warn message") // will be logged ("[WARN] some info message")
 # Logger parameters
 Package provide ability to add: 
 1. Time prefix with ```litelog.WithTime(layout ...string)``` method. Layout is a some time package layout const
-layout parameter can be empty, than ```litelog.WithTime()``` method will set time.RFC3339 layout
+layout parameter can be empty, than ```litelog.WithTime()``` method will set ```time.RFC3339``` layout
 2. Custom text prefix before message with ```litelog.WithPrefix(pr string)``` method.
 3. Custom io.Writer object where Logger will be write mesages with ```litelog.WithWriter(wr io.Writer)``` method (By default os.Stdout).
 4. Log level with ```litelog.WithLevel(lev int)``` method.
