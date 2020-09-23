@@ -1,4 +1,5 @@
 # LiteLog
+[(https://img.shields.io/badge/coverage-96.94%25-success)] (https://codecov.io/gh/mal-as/litelog)
 
 ## Litelog is simple tiny package that provide logging with levels
 There are five levels 
