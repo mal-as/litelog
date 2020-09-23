@@ -200,3 +200,14 @@ func TestDefaultLogger(t *testing.T) {
 		t.Errorf("expected - %s but got - %s\n", inFmt, buf.String())
 	}
 }
+
+func TestDefaultTime(t *testing.T) {
+	buf := &bytes.Buffer{}
+	l := New(WithWriter(buf), WithTime())
+
+	l.Println("some text")
+
+	if !strings.HasPrefix(buf.String(), "2020") {
+		t.Errorf("result doesn't have time prefix: %s", buf.String())
+	}
+}
