@@ -9,6 +9,13 @@ import (
 
 func (l *Logger) format(msg string, lvlPrefix string) string {
 	if !l.hasPrefix && !l.hasTime {
+		if lvlPrefix != "" {
+			sb := new(strings.Builder)
+			sb.WriteString(lvlPrefix)
+			sb.WriteString(" ")
+			sb.WriteString(msg)
+			return sb.String()
+		}
 		return msg
 	}
 

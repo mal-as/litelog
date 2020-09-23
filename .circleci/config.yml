@@ -3,8 +3,8 @@ orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
   build:
+    docker:
+      - image: circleci/golang:1.15
     steps:
-      - run: 
-          command: export CODECOV_TOKEN="15977ed4-c825-40e5-8809-83dc43d36f66"
       - codecov/upload:
           file: cover.out

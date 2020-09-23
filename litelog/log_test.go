@@ -2,55 +2,36 @@ package litelog
 
 import (
 	"bytes"
-	"os"
-	"os/exec"
 	"strings"
 	"testing"
 	"time"
 )
 
 func TestFatal(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "1" {
-		buf := &bytes.Buffer{}
-		l := New(WithWriter(buf))
-		l.Fatal("some text")
-		if buf.String() != "[FATAL] some text\n" {
-			t.Errorf("expected string '[FATAL] some text', but got - %s\n", buf.String())
-		}
-		return
+	buf := &bytes.Buffer{}
+	l := New(WithWriter(buf))
+	l.Fatal("some text")
+	if buf.String() != "[FATAL] some text\n" {
+		t.Errorf("expected string '[FATAL] some text', but got - %s\n", buf.String())
 	}
-
-	cmd := exec.Command(os.Args[0], "-test.run=TestFatal")
-	cmd.Env = append(os.Environ(), "BE_CRASHER=1")
-	err := cmd.Run()
-
-	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
-		return
-	}
-
-	t.Fatalf("process ran with err %v, want exit status 1", err)
 }
 
 func TestFatalf(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "1" {
-		buf := &bytes.Buffer{}
-		l := New(WithWriter(buf))
-		l.Fatalf("some text %d - %v", 1, true)
-		if buf.String() != "[FATAL] some text 1 - true" {
-			t.Errorf("expected string '[FATAL] some text 1 - true', but got - %s\n", buf.String())
-		}
-		return
+	buf := &bytes.Buffer{}
+	l := New(WithWriter(buf))
+	l.Fatalf("some text %d - %v", 1, true)
+	if buf.String() != "[FATAL] some text 1 - true" {
+		t.Errorf("expected string '[FATAL] some text 1 - true', but got - %s\n", buf.String())
 	}
+}
 
-	cmd := exec.Command(os.Args[0], "-test.run=TestFatalf")
-	cmd.Env = append(os.Environ(), "BE_CRASHER=1")
-	err := cmd.Run()
-
-	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
-		return
+func TestEmptyLogger(t *testing.T) {
+	buf := &bytes.Buffer{}
+	l := New(WithWriter(buf))
+	l.Println("some text")
+	if buf.String() != "some text\n" {
+		t.Errorf("expectedt 'some text', but got - %s", buf.String())
 	}
-
-	t.Fatalf("process ran with err %v, want exit status 1", err)
 }
 
 func TestPrintln(t *testing.T) {
@@ -205,7 +186,7 @@ func TestDefaultLogger(t *testing.T) {
 	l := New(WithWriter(buf))
 	in := "some text"
 	l.Info(in)
-	if buf.String() != in+"\n" {
+	if buf.String() != "[INFO] "+in+"\n" {
 		t.Errorf("expected - %s but got - %s\n", in, buf.String())
 	}
 
@@ -215,7 +196,7 @@ func TestDefaultLogger(t *testing.T) {
 	buf.Reset()
 
 	l.Infof(inTmpl, 1, true)
-	if buf.String() != inFmt {
+	if buf.String() != "[INFO] "+inFmt {
 		t.Errorf("expected - %s but got - %s\n", inFmt, buf.String())
 	}
 }
