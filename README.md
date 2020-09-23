@@ -1,5 +1,6 @@
 # LiteLog
-[![codecov] (https://img.shields.io/badge/coverage-96.94%25-success)] (https://codecov.io/gh/mal-as/litelog)
+<a href="https://codecov.io/gh/mal-as/litelog" alt="coverage">
+        <img src="https://img.shields.io/badge/coverage-96.94%25-success" /></a>
 
 ## Litelog is simple tiny package that provide logging with levels
 There are five levels 
@@ -33,7 +34,7 @@ log.Warn("some warn message") // will be logged ("[WARN] some info message")
 # Logger parameters
 Package provide ability to add: 
 1. Time prefix with ```litelog.WithTime(layout ...string)``` method. Layout is a some time package layout const
-layout parameter can be empty, than ```litelog.WithTime()``` method will set time.RFC3339 layout
+layout parameter can be empty, than ```litelog.WithTime()``` method will set ```time.RFC3339``` layout
 2. Custom text prefix before message with ```litelog.WithPrefix(pr string)``` method.
 3. Custom io.Writer object where Logger will be write mesages with ```litelog.WithWriter(wr io.Writer)``` method (By default os.Stdout).
 4. Log level with ```litelog.WithLevel(lev int)``` method.
