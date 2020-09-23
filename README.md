@@ -12,7 +12,7 @@ const (
 	Trace
 )
 ```
-If defined level is less than level that called method expect, than message will not be logged.
+If defined level is less than level that called method is expecting, than message will not be logged.
 It provide you ability to increase verbosity of logs.
 
 Example
